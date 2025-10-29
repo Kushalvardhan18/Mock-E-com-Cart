@@ -1,43 +1,58 @@
 class ApiClient {
-    constructor() {
-        this.baseURL = "https://ecom-backend-mu-orpin.vercel.app/api"
-        this.defaultHeaders = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+  constructor() {
+    this.baseURL = "https://ecom-backend-mu-orpin.vercel.app/api"
+    this.defaultHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
+  }
 
-    async customFetch(endpoint, options = {}) {
-        try {
-            const url = `${this.baseURL}${endpoint}`
-            const headers = { ...this.defaultHeaders, ...options.headers }
-            const config = {
-                ...options,
-                headers
-            }
-            console.log(`Fetching ${url}`);
+  async customFetch(endpoint, options = {}) {
+    try {
+      const url = `${this.baseURL}${endpoint}`
+      const headers = { ...this.defaultHeaders, ...options.headers }
+      const config = {
+        ...options,
+        headers
+      }
+      console.log(`Fetching ${url}`);
 
-            const res = await fetch(url, config)
-            const data = await res.json()
-            return data
+      const res = await fetch(url, config)
+      const data = await res.json()
+      return data
 
-        } catch (error) {
-            console.error('API Error ', error)
-        }
+    } catch (error) {
+      console.error('API Error ', error)
     }
+  }
 
-    async products(){
-      return   this.customFetch("/products")
-    }
-    async cart(){
-      return   this.customFetch("/cart")
-    }
-    async addToCart(productId){
-      return   this.customFetch("/cart",{
-        method:"POST",
-        body:JSON.stringify({productId})
-      })
-    }
+  async products() {
+    return this.customFetch("/products")
+  }
+  async cart() {
+    return this.customFetch("/cart")
+  }
+  async addToCart(productId) {
+    return this.customFetch("/cart", {
+      method: "POST",
+      body: JSON.stringify({ productId })
+    })
+  }
+  async deleteItem(productId) {
+    return this.customFetch(`/cart/${productId}`, {
+      method: "DELETE",
+    })
+  }
+  async removeItem(productId) {
+    return this.customFetch(`/cart/remove/${productId}`, {
+      method: "PUT",
+    })
+  }
+  async checkout() {
+    return this.customFetch("/checkout", {
+      method: "POST",
+    })
+  }
 }
 
 

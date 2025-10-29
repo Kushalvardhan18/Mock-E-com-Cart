@@ -14,6 +14,7 @@ const Products = () => {
   async function addItem(productId) {
     const response = await apiClient.addToCart(productId);
     console.log(response);
+    alert("Item added to cart✅")
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +49,7 @@ const Products = () => {
           onClick={cartOpen}
         />
       </div>
-      <h1 className="text-center text-3xl mb-10">Products</h1>
+      <h1 className="text-center text-4xl mb-10">Products</h1>
       <div className="grid grid-cols-4 gap-5 m-3">
         {items.map((item) => (
           <div key={item.id} className="bg-white p-1">
