@@ -166,6 +166,10 @@ const Cart = () => {
               <span>Shipping</span>
               <span>₹ 99</span>
             </div>
+            <div className="flex justify-between text-gray-700 font-medium mb-2">
+              <span>Discount</span>
+              <span>-₹ 99</span>
+            </div>
             <div className="flex justify-between text-lg font-bold text-gray-900 mt-3 border-t pt-3">
               <span>Total</span>
               <span>
@@ -173,7 +177,7 @@ const Cart = () => {
                 {data.reduce(
                   (acc, item) => acc + item.price * item.quantity,
                   0
-                ) + 99}
+                ) + 99 - 99}
               </span>
             </div>
           </div>
