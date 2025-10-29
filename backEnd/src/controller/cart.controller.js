@@ -4,6 +4,14 @@ import db from "../utils/db.js";
 
 
 const products = async (req, res) => {
+     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173"); // React dev
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
     try {
         await db()
         const products = await Product.find()
