@@ -10,8 +10,10 @@ const products = async (req, res) => {
             products: products
         })
     } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server Error', error: error.message });
+}
 
-    }
 }
 const addToCart = async (req, res) => {
     try {
@@ -36,9 +38,11 @@ const deleteItem = async (req, res) => {
     try {
         const { id } = req.params
         await Cart.findByIdAndDelete(id)
-        res.json({ message:"Item removed from the cart"})
+        res.json({ message: "Item removed from the cart" })
     } catch (error) {
-
+        res.status(500).json({
+            error: error.message
+        })
     }
 }
 const getCart = async (req, res) => {
@@ -55,14 +59,14 @@ const getCart = async (req, res) => {
 const checkOut = async (req, res) => {
     try {
         const cartItems = await Cart.find()
-        if(cartItems.length === 0){
+        if (cartItems.length === 0) {
             return res.status(400).json({ message: "Cart is empty" })
         }
-         let total = 0;
+        let total = 0;
         const itemsDetail = [];
 
         for (let item of cartItems) {
-            
+
             const product = await Product.findById(item.productId);
             if (product) {
                 total += product.price * (item.quantity || 1);
@@ -85,6 +89,6 @@ const checkOut = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Something went wrong", error: error.message });
     }
- }
+}
 
 export { products, addToCart, deleteItem, getCart, checkOut }
