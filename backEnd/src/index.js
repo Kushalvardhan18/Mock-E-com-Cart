@@ -8,9 +8,11 @@ dotenv.config()
 const app = express()
 const port = process.env.PORT || 4000
 app.use(express.json())
-app.use(cors({
-    origin:"http://localhost:5173/"
-}))
+app.use(cors())
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*'); // allow all origins
+  next();
+});
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
