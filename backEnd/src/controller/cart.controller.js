@@ -1,9 +1,11 @@
 import Cart from "../model/cart.model.js";
 import Product from "../model/product.model.js";
+import db from "../utils/db.js";
 
 
 const products = async (req, res) => {
     try {
+        await db()
         const products = await Product.find()
         return res.status(200).json({
             message: "Hii kushal ",
