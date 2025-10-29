@@ -40,8 +40,11 @@ const addToCart = async (req, res) => {
 const deleteItem = async (req, res) => {
     try {
         const { id } = req.params
-        await Cart.findByIdAndDelete(id)
-        res.json({ message: "Item removed from the cart" })
+        const deletedItem = await Cart.findOneAndDelete({ productId: id })
+        if (!deletedItem) {
+            return res.status(404).json({ message: "Item not found in cart" })
+        }
+        res.status(200).json({ message: "Item deleted successfully" });
     } catch (error) {
         res.status(500).json({
             error: error.message
@@ -50,8 +53,8 @@ const deleteItem = async (req, res) => {
 }
 const removeItem = async (req, res) => {
     try {
-        const { itemId } = req.params
-        const cartItem = await Cart.findOne({ itemId })
+        const { id } = req.params
+        const cartItem = await Cart.findOne({ productId: id })
         if (!cartItem) {
             return res.status(404).json({ message: "Item not found in cart" })
         }
@@ -60,7 +63,11 @@ const removeItem = async (req, res) => {
             await cartItem.save();
             return res.status(200).json({ message: "Item quantity decreased", cartItem });
         }
+        else {
 
+            await Cart.findOneAndDelete({ productId: id });
+            return res.status(200).json({ message: "Item removed from cart" });
+        }
         return res.status(400).json({ message: "Item quantity cannot go below 1" });
 
     } catch (error) {
