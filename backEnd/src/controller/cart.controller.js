@@ -4,7 +4,7 @@ import db from "../utils/db.js";
 
 
 const products = async (req, res) => {
-   
+
     try {
         await db()
         const products = await Product.find()
@@ -13,9 +13,9 @@ const products = async (req, res) => {
             products: products
         })
     } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server Error', error: error.message });
-}
+        console.error(error);
+        return res.status(500).json({ message: 'Server Error', error: error.message });
+    }
 
 }
 const addToCart = async (req, res) => {
@@ -48,6 +48,28 @@ const deleteItem = async (req, res) => {
         })
     }
 }
+const removeItem = async (req, res) => {
+    try {
+        const { itemId } = req.params
+        const cartItem = await Cart.findOne({ itemId })
+        if (!cartItem) {
+            return res.status(404).json({ message: "Item not found in cart" })
+        }
+        if (cartItem.quantity > 1) {
+            cartItem.quantity -= 1;
+            await cartItem.save();
+            return res.status(200).json({ message: "Item quantity decreased", cartItem });
+        }
+
+        return res.status(400).json({ message: "Item quantity cannot go below 1" });
+
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
 const getCart = async (req, res) => {
     try {
         const items = await Cart.find().populate("productId");
@@ -94,4 +116,4 @@ const checkOut = async (req, res) => {
     }
 }
 
-export { products, addToCart, deleteItem, getCart, checkOut }
+export { products, addToCart, deleteItem, getCart, checkOut, removeItem }
