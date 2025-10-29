@@ -29,6 +29,15 @@ class ApiClient {
     async products(){
       return   this.customFetch("/products")
     }
+    async cart(){
+      return   this.customFetch("/cart")
+    }
+    async addToCart(productId){
+      return   this.customFetch("/cart",{
+        method:"POST",
+        body:JSON.stringify({productId})
+      })
+    }
 }
 
 

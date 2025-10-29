@@ -1,4 +1,4 @@
-import AddToCart from "./components/AddToCart";
+import AddToCart from "./components/Cart";
 import Products from "./components/Products";
 import {BrowserRouter as Router ,Routes,Route} from "react-router-dom"
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Products/>}/>
-        <Route path="/addtocart" element={<AddToCart/>}/>
+        <Route path="/cart" element={<AddToCart/>}/>
       </Routes>
     </Router>
       

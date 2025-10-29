@@ -3,9 +3,18 @@ import { useEffect } from "react";
 import apiClient from "../../service/apiClient";
 import cart from "../assets/cart.png";
 import { useNavigate } from "react-router";
-
+import Loader from "./Loader"
 const Products = () => {
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
+
+  function cartOpen() {
+    navigate("/cart");
+  }
+  async function addItem(productId) {
+    const response = await apiClient.addToCart(productId);
+    console.log(response);
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,25 +28,16 @@ const Products = () => {
     };
     fetchData();
   }, []);
-  const navigate = useNavigate();
-
-  function cartOpen() {
-    navigate("/cart");
-  }
-  async function addItem(productId) {
-    const response = await apiClient.addToCart(productId);
-    console.log(response);
-  }
-  if (!data) return <h1>loading...</h1>;
-
+  if (!data) return <Loader/>
+  
   const items =
-    data.products?.map((product) => ({
-      id: product._id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    })) || [];
-
+  data.products?.map((product) => ({
+    id: product._id,
+    name: product.name,
+    price: product.price,
+    image: product.image,
+  })) || [];
+  
   return (
     <>
       <div className="flex justify-end mx-5 mt-1">
